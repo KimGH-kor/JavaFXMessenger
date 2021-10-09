@@ -26,9 +26,7 @@ public class Client {
 						InputStream in = socket.getInputStream();
 						byte[] buffer = new byte[512];
 						int length = in.read(buffer);
-						while(length == -1) {
-							throw new IOException();
-						}
+						if(length == -1)throw new IOException(); 
 						System.out.println("[메시지 수신 성공]"
 						+socket.getRemoteSocketAddress() // 현재 접속한 클라의 ip주소와 같은 주소정보 출력
 						+": "+Thread.currentThread().getName());// 스레드의 고유 정보 출력(스레드 이름)
@@ -59,7 +57,6 @@ public class Client {
 	//클라이언트에게 메시지를 전송하는 메소드
 	public void send(String message) {
 		Runnable thread = new Runnable() {
-			
 			@Override
 			public void run() {
 				try {
@@ -81,5 +78,6 @@ public class Client {
 				}
 			}
 		};
+		Main.threadPool.submit(thread);
 	}
 }
